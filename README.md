@@ -1,13 +1,15 @@
-% MINI GERMAN-TO_ENGLISH TRANSLATOR
+# Mini German-to-English Translator
 
 This repository contains the code for a Simple German to English Translation system using Tranformer models.
+
+![image](https://github.com/nnigam96/modlee_code_test/assets/99565294/4b1fb625-fefb-405d-bb4e-29e457a1a21f)
 
 The repository is organized into 3 main folders:
 model_package: Contains the code for the model and the training script
 infer_package: Contains the code for the inference script
 demo_api: Contains the code for the demo API
 
-1. #model_package:
+## 1. model_package:
     a. model_package: Contains .py files used for training and saving the neural network 
         -driver.py: Main entry point for the training routine
         -model.py: Contains the code for the model
@@ -21,19 +23,19 @@ demo_api: Contains the code for the demo API
     c. requirements.txt: Contains the dependencies for the model
     d. setup.py: Contains the setup script for the package
 
-2. #infer_package:
-    a. ##infer_package:
+## 2. infer_package:
+    a. infer_package:
         - translate.py: Contains the code for the inference routine which is used by the API for exposing the end point
-    b. ##tests: Placeholder for the unit tests for the inference script
-    c. ##setup.py: Contains the setup script for the package
+    b. tests: Placeholder for the unit tests for the inference script
+    c. setup.py: Contains the setup script for the package
 
-3. #demo_api:
+## 3. demo_api:
     a. demo_api:
         - app.py: Contains the code for the Flask API with the end point for the translation
 
 
-#Important commands for usage:
-1. ##To train the model:
+## Important commands for usage:
+## 1. To train the model:
     - Navigate to model_package/model_package
     - Run the command: 
     ```
@@ -42,7 +44,7 @@ demo_api: Contains the code for the demo API
     - The model will be saved in the model_package/model_package/checkpoints folder
     - Model hyperparameters can be updated in the model_package/model_package/constants.py file
 
-2. ##To run the flask app:
+## 2. To run the flask app:
     - Navigate to demo_api/demo_api
     - Run the command: 
     ```
@@ -50,8 +52,8 @@ demo_api: Contains the code for the demo API
     ```
     - The app will be running locally on port 5000
 
-#Package Creation:
-1. ##To create the model package:
+## Package Creation:
+### 1. To create the model package:
     - Navigate to model_package
     - Run the command: 
     ```
@@ -59,7 +61,7 @@ demo_api: Contains the code for the demo API
     ```
     - The package will be created in the dist folder
 
-2. ##To create the inference package:
+### 2. To create the inference package:
     - Navigate to infer_package
     - Run the command: 
     ```
@@ -67,7 +69,7 @@ demo_api: Contains the code for the demo API
     ```
     - The package will be created in the dist folder
 
-#Install Package after creation:
+## Install Package after creation:
 1. To install the model package:
     ```
     # Navigate to repo directory
