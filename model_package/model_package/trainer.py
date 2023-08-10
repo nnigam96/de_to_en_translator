@@ -4,8 +4,8 @@ from torchtext.datasets import multi30k, Multi30k
 from typing import Iterable, List
 from torch.utils.data import DataLoader
 import torch 
-from utils import generate_square_subsequent_mask, create_mask
-from constants import *
+from model_package.utils import generate_square_subsequent_mask, create_mask
+from model_package.constants import *
 from timeit import default_timer as timer
 import matplotlib.pyplot as plt
 import os
@@ -17,20 +17,30 @@ multi30k.URL["valid"] = "https://raw.githubusercontent.com/neychev/small_DL_repo
 SRC_LANGUAGE = 'de'
 TGT_LANGUAGE = 'en'
 
-
-# Place-holders
+# Tokenization and Vocabulary Placeholder Initialization
 token_transform = {}
 vocab_transform = {}
 
 token_transform[SRC_LANGUAGE] = get_tokenizer('spacy', language='de_core_news_sm')
 token_transform[TGT_LANGUAGE] = get_tokenizer('spacy', language='en_core_web_sm')
 
+# Method to train a single epoch of the Seq2Seq model
 def train_epoch(model, optimizer, loss_fn, train_loader):
+    """
+    Train the Seq2Seq model for a single epoch.
+
+    Args:
+        model (nn.Module): The Seq2Seq model to be trained.
+        optimizer (torch.optim.Optimizer): The optimizer for updating model parameters.
+        loss_fn: The loss function for calculating training loss.
+        train_loader (DataLoader): DataLoader for the training dataset.
+
+    Returns:
+        float: Average training loss for the epoch.
+    """
     model.train()
     losses = 0
-    #train_iter = Multi30k(split='train', language_pair=(SRC_LANGUAGE, TGT_LANGUAGE))
-    #train_dataloader = DataLoader(train_iter, batch_size=BATCH_SIZE, collate_fn=collate_fn)
-
+    
     for src, tgt in train_loader:
         src = src.to(DEVICE)
         tgt = tgt.to(DEVICE)
@@ -49,8 +59,19 @@ def train_epoch(model, optimizer, loss_fn, train_loader):
 
     return losses / len(list(train_loader))
 
-
+# Method to evaluate the Seq2Seq model
 def evaluate(model, loss_fn, val_loader):
+    """
+    Evaluate the Seq2Seq model.
+
+    Args:
+        model (nn.Module): The Seq2Seq model to be evaluated.
+        loss_fn: The loss function for calculating evaluation loss.
+        val_loader (DataLoader): DataLoader for the validation dataset.
+
+    Returns:
+        float: Average validation loss.
+    """
     model.eval()
     losses = 0
 
@@ -67,19 +88,19 @@ def evaluate(model, loss_fn, val_loader):
 
     return losses / len(list(val_loader))
 
-
-#for epoch in range(1, NUM_EPOCHS+1):
-#    start_time = timer()
-#    train_loss = train_epoch(transformer, optimizer)
-#    end_time = timer()
-#    val_loss = evaluate(transformer)
-#    print((f"Epoch: {epoch}, Train loss: {train_loss:.3f}, Val loss: {val_loss:.3f}, "f"Epoch time = {(end_time - start_time):.3f}s"))
-
-
-#train_dataloader = DataLoader(train_iter, batch_size=BATCH_SIZE, collate_fn=collate_fn)
-#val_dataloader = DataLoader(val_iter, batch_size=BATCH_SIZE, collate_fn=collate_fn)
-
+# Method to train the Seq2Seq model for multiple epochs and save checkpoints
 def model_train(model, optimizer, loss_fn, epochs, train_loader, val_loader):
+    """
+    Train the Seq2Seq model for multiple epochs.
+
+    Args:
+        model (nn.Module): The Seq2Seq model to be trained.
+        optimizer (torch.optim.Optimizer): The optimizer for updating model parameters.
+        loss_fn: The loss function for calculating training and evaluation loss.
+        epochs (int): Number of training epochs.
+        train_loader (DataLoader): DataLoader for the training dataset.
+        val_loader (DataLoader): DataLoader for the validation dataset.
+    """
     train_losses = []
     val_losses = []
     best_val_loss = float('inf')  # Initialize with a high value
@@ -100,12 +121,6 @@ def model_train(model, optimizer, loss_fn, epochs, train_loader, val_loader):
             checkpoint_path = os.path.join('D:\Git Repos\modlee_code_test\checkpoints', 'best_model.pth')
             torch.save(model.state_dict(), checkpoint_path)
     
+    # Plot and save the training and validation loss curve
     plt.plot(range(1, epochs+1), train_losses, label='Training Loss')
-    plt.plot(range(1, epochs+1), val_losses, label='Validation Loss')
-    plt.xlabel('Epoch')
-    plt.ylabel('Loss')
-    plt.title('Training and Validation Loss Curve')
-    plt.legend()
-    loss_curve_path = os.path.join('D:\Git Repos\modlee_code_test\checkpoints', 'loss_curve.png')
-    plt.savefig(loss_curve_path)
-    plt.show()
+    plt.plot(range(1, epochs+1), val_losses)

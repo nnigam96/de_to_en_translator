@@ -1,11 +1,11 @@
-from constants import *
-from model import *
-from data import *
-from data_utils import *
-from trainer import *
+from model_package.constants import *
+from model_package.model import *
+from model_package.data import *
+from model_package.data_utils import *
+from model_package.trainer import *
 from torch.utils.data import DataLoader
-from utils import *
-from inference import *
+from model_package.utils import *
+from model_package.inference import *
 import argparse
 import torch
 
