@@ -1,3 +1,5 @@
+% MINI GERMAN-TO_ENGLISH TRANSLATOR
+
 This repository contains the code for a Simple German to English Translation system using Tranformer models.
 
 The repository is organized into 3 main folders:
@@ -5,7 +7,7 @@ model_package: Contains the code for the model and the training script
 infer_package: Contains the code for the inference script
 demo_api: Contains the code for the demo API
 
-1. model_package:
+1. #model_package:
     a. model_package: Contains .py files used for training and saving the neural network 
         -driver.py: Main entry point for the training routine
         -model.py: Contains the code for the model
@@ -19,19 +21,19 @@ demo_api: Contains the code for the demo API
     c. requirements.txt: Contains the dependencies for the model
     d. setup.py: Contains the setup script for the package
 
-2. infer_package:
-    a. infer_package:
+2. #infer_package:
+    a. ##infer_package:
         - translate.py: Contains the code for the inference routine which is used by the API for exposing the end point
-    b. tests: Placeholder for the unit tests for the inference script
-    c. setup.py: Contains the setup script for the package
+    b. ##tests: Placeholder for the unit tests for the inference script
+    c. ##setup.py: Contains the setup script for the package
 
-3. demo_api:
+3. #demo_api:
     a. demo_api:
         - app.py: Contains the code for the Flask API with the end point for the translation
 
 
-Important commands for usage:
-1. To train the model:
+#Important commands for usage:
+1. ##To train the model:
     - Navigate to model_package/model_package
     - Run the command: 
     ```
@@ -40,7 +42,7 @@ Important commands for usage:
     - The model will be saved in the model_package/model_package/checkpoints folder
     - Model hyperparameters can be updated in the model_package/model_package/constants.py file
 
-2. To run the flask app:
+2. ##To run the flask app:
     - Navigate to demo_api/demo_api
     - Run the command: 
     ```
@@ -48,8 +50,8 @@ Important commands for usage:
     ```
     - The app will be running locally on port 5000
 
-Package Creation:
-1. To create the model package:
+#Package Creation:
+1. ##To create the model package:
     - Navigate to model_package
     - Run the command: 
     ```
@@ -57,7 +59,7 @@ Package Creation:
     ```
     - The package will be created in the dist folder
 
-2. To create the inference package:
+2. ##To create the inference package:
     - Navigate to infer_package
     - Run the command: 
     ```
@@ -65,7 +67,7 @@ Package Creation:
     ```
     - The package will be created in the dist folder
 
-Install Package after creation:
+#Install Package after creation:
 1. To install the model package:
     ```
     # Navigate to repo directory
@@ -91,7 +93,7 @@ python -m spacy download en_core_web_sm
 
 These are used internally for the tokenization of the text.
 
-Once sucessfully installed, infer_package can be used as translation as follows:
+Once sucessfully installed, infer_package can be used for translation as follows:
 
 ```
 import infer_package.translate as translator

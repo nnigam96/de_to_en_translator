@@ -1,8 +1,8 @@
 Contains the code for training and evaluating a pytorch transformer for a German to English translation task. 
 
-Important files:
+#Important files:
 
-1. model_package\:
+1. #model_package\:
     a. driver.py: Main entry point for the training routine
         - Written so that simply executing the file will start the training process and save the model in the checkpoints folder along with loss curves for later analysis.
         - Hyperparameters can be updated in the constants.py file
@@ -21,5 +21,5 @@ Important files:
     g. utils: Utility functions for the model training
 
 
-2. setup.py: Contains the setup script for the package
+2. #setup.py: Contains the setup script for the package
     - Contains the script to create the package. The file is used to create the package using the command mentioned above. Dependencies for the package can be added here for easier installation.
