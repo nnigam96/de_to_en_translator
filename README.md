@@ -1,104 +1,130 @@
-# Mini German-to-English Translator
+# German-to-English Translator
 
-This repository contains the code for a Simple German to English Translation system using Tranformer models.
+A powerful and efficient German-to-English translation system built using Transformer models. This project provides both a training pipeline for custom model development and a ready-to-use inference API for translation tasks.
 
-![image](https://github.com/nnigam96/modlee_code_test/assets/99565294/4b1fb625-fefb-405d-bb4e-29e457a1a21f)
+![Translation Demo](https://github.com/nnigam96/modlee_code_test/assets/99565294/4b1fb625-fefb-405d-bb4e-29e457a1a21f)
 
-The repository is organized into 3 main folders:
-model_package: Contains the code for the model and the training script
-infer_package: Contains the code for the inference script
-demo_api: Contains the code for the demo API
+## Features
 
-## 1. model_package:
-    a. model_package: Contains .py files used for training and saving the neural network 
-        -driver.py: Main entry point for the training routine
-        -model.py: Contains the code for the model
-        -data.py: Contains the code for data loaders and data transforms
-        -data_utils: Utility functions for data processing
-        -trainer: Contains the code for the training routine
-        -constants: Contains the constants used in the model
-        -utils: Utility functions for the model training
-        -inference: Contains the code for the inference routine, used by Flask API in demo_api
-    b. tests: Placeholder for the unit tests for the model
-    c. requirements.txt: Contains the dependencies for the model
-    d. setup.py: Contains the setup script for the package
+- **Transformer-based Architecture**: Utilizes state-of-the-art transformer models for accurate translations
+- **Easy-to-Use API**: Simple REST API for quick integration into applications
+- **Custom Training Pipeline**: Full training pipeline for model customization
+- **Modular Design**: Separated into model training and inference packages
+- **SpaCy Integration**: Uses SpaCy for efficient text tokenization
+- **Test Feature**: Testing Hugging Face LLM summarization workflow
+- **Test Feature**: Testing summarization with German-to-English translator project
 
-## 2. infer_package:
-    a. infer_package:
-        - translate.py: Contains the code for the inference routine which is used by the API for exposing the end point
-    b. tests: Placeholder for the unit tests for the inference script
-    c. setup.py: Contains the setup script for the package
-
-## 3. demo_api:
-    a. demo_api:
-        - app.py: Contains the code for the Flask API with the end point for the translation
-
-
-## Important commands for usage:
-## 1. To train the model:
-    - Navigate to model_package/model_package
-    - Run the command: 
-    ```
-    python driver.py
-    ```
-    - The model will be saved in the model_package/model_package/checkpoints folder
-    - Model hyperparameters can be updated in the model_package/model_package/constants.py file
-
-## 2. To run the flask app:
-    - Navigate to demo_api/demo_api
-    - Run the command: 
-    ```
-    python app.py
-    ```
-    - The app will be running locally on port 5000
-
-## Package Creation:
-### 1. To create the model package:
-    - Navigate to model_package
-    - Run the command: 
-    ```
-    python setup.py sdist bdist_wheel
-    ```
-    - The package will be created in the dist folder
-
-### 2. To create the inference package:
-    - Navigate to infer_package
-    - Run the command: 
-    ```
-    python setup.py sdist bdist_wheel
-    ```
-    - The package will be created in the dist folder
-
-## Install Package after creation:
-1. To install the model package:
-    ```
-    # Navigate to repo directory
-    cd model_package
-    pip install dist\model_package-0.1.tar.gz
-    ```
-2. To install the inference package:
-    ```
-    # Navigate to repo directory
-    cd infer_package
-    pip install dist\infer_package-0.1.tar.gz
-    ```
-
-
-NOTE: For infer_package to run, the system expects an installation of 2 components, one each for German and English languages.
-The installation for the same can be found here. Ignore if installed already:
+## Project Structure
 
 ```
+de_to_en_translator/
+├── model_package/          # Model training and architecture
+│   ├── model_package/      # Core model implementation
+│   │   ├── model.py        # Transformer model definition
+│   │   ├── data.py         # Data loading and preprocessing
+│   │   ├── trainer.py      # Training routines
+│   │   └── inference.py    # Inference implementation
+│   └── setup.py            # Package installation
+├── infer_package/          # Inference package
+│   ├── infer_package/      # Translation implementation
+│   │   └── translate.py    # Translation interface
+│   └── setup.py            # Package installation
+└── demo_api/               # Demo API
+    └── app.py              # Flask API implementation
+```
+
+## Quick Start
+
+### Prerequisites
+
+```bash
+# Install language models for tokenization
 python -m spacy download de_core_news_sm
 python -m spacy download en_core_web_sm
-
 ```
 
-These are used internally for the tokenization of the text.
+### Installation
 
-Once sucessfully installed, infer_package can be used for translation as follows:
-
+1. Install the model package:
+```bash
+cd model_package
+pip install dist/model_package-0.1.tar.gz
 ```
+
+2. Install the inference package:
+```bash
+cd infer_package
+pip install dist/infer_package-0.1.tar.gz
+```
+
+### Usage
+
+#### Translation API
+
+```python
 import infer_package.translate as translator
-translator.get_translation("Ich bin ein Berliner")
->>> 'I am a Berliner'
+
+# Translate German text to English
+result = translator.get_translation("Ich bin ein Berliner")
+print(result)  # Output: 'I am a Berliner'
 ```
+
+#### Running the Demo API
+
+```bash
+cd demo_api/demo_api
+python app.py
+```
+
+The API will be available at `http://localhost:5000`
+
+## Development
+
+### Training Custom Models
+
+1. Navigate to the model package:
+```bash
+cd model_package/model_package
+```
+
+2. Configure model parameters in `constants.py`
+
+3. Start training:
+```bash
+python driver.py
+```
+
+Trained models are saved in `model_package/model_package/checkpoints/`
+
+### Package Development
+
+#### Creating Model Package
+```bash
+cd model_package
+python setup.py sdist bdist_wheel
+```
+
+#### Creating Inference Package
+```bash
+cd infer_package
+python setup.py sdist bdist_wheel
+```
+
+## Technical Details
+
+- **Model Architecture**: Transformer-based neural network
+- **Tokenization**: SpaCy for German and English text processing
+- **API Framework**: Flask for REST API implementation
+- **Training Pipeline**: Custom training loop with configurable parameters
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
