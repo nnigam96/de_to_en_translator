@@ -1,6 +1,6 @@
 # German-to-English Translator
 
-A powerful and efficient German-to-English translation system built using Transformer models. This project provides both a training pipeline for custom model development and a ready-to-use inference API for translation tasks.
+A powerful and efficient German-to-English translation system built using Pytorch based Transformer models. This project provides both a training pipeline for custom model development and a ready-to-use inference API for translation tasks.
 
 ![Translation Demo](https://github.com/nnigam96/modlee_code_test/assets/99565294/4b1fb625-fefb-405d-bb4e-29e457a1a21f)
 
