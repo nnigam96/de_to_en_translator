@@ -1,0 +1,30 @@
+name: Trigger Summary
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '**/README.md'
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+    paths:
+      - '**/README.md'
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send repository_dispatch to summarizer repo
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          repository: nnigam96/project-summarizer
+          event-type: summarize_repo
+          client-payload: |
+            {
+              "repository": "nnigam96/de_to_en_translator",
+              "repository_name": "de_to_en_translator"
+            }
