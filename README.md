@@ -1,36 +1,30 @@
-# German-to-English Translator
+# DocAssist
 
-A powerful and efficient German-to-English translation system built using Transformer models. This project provides both a training pipeline for custom model development and a ready-to-use inference API for translation tasks.
-
-![Translation Demo](https://github.com/nnigam96/modlee_code_test/assets/99565294/4b1fb625-fefb-405d-bb4e-29e457a1a21f)
+An efficient local document retrieval and question-answering system powered by LLaMA 2. Built with a modular RAG pipeline using hybrid search and `llama-cpp-python` for fast, quantized inference.
 
 ## Features
 
-- **Transformer-based Architecture**: Utilizes state-of-the-art transformer models for accurate translations
-- **Easy-to-Use API**: Simple REST API for quick integration into applications
-- **Custom Training Pipeline**: Full training pipeline for model customization
-- **Modular Design**: Separated into model training and inference packages
-- **SpaCy Integration**: Uses SpaCy for efficient text tokenization
-- **Test Feature**: Testing Hugging Face LLM summarization workflow
-- **Test Feature**: Testing summarization with German-to-English translator project
+- **Local LLM Inference**: Uses `llama-cpp-python` for running quantized LLaMA 2 GGUF models locally
+- **Hybrid Retrieval System**: Combines FAISS-based semantic search with keyword-based filtering
+- **Real-Time Indexing**: Watches document directory and reindexes on file updates
+- **Streamlit Interface**: Minimal web UI for querying and document previews
+- **Metadata-aware Downloads**: Retrieve document source from every answer
+- **Session Management**: Reset context every 30 minutes to avoid memory bloat
 
 ## Project Structure
 
 ```
-de_to_en_translator/
-├── model_package/          # Model training and architecture
-│   ├── model_package/      # Core model implementation
-│   │   ├── model.py        # Transformer model definition
-│   │   ├── data.py         # Data loading and preprocessing
-│   │   ├── trainer.py      # Training routines
-│   │   └── inference.py    # Inference implementation
-│   └── setup.py            # Package installation
-├── infer_package/          # Inference package
-│   ├── infer_package/      # Translation implementation
-│   │   └── translate.py    # Translation interface
-│   └── setup.py            # Package installation
-└── demo_api/               # Demo API
-    └── app.py              # Flask API implementation
+doc_assist/
+├── models/                  # Place GGUF models here
+├── docs/                    # Directory to drop documents (PDF, TXT, DOCX)
+├── src/
+│   ├── app.py               # Streamlit frontend
+│   ├── document_parser.py   # Chunking and preprocessing logic
+│   ├── embedding.py         # Embedding generation and storage
+│   ├── hybrid_retriever.py  # FAISS + keyword retrieval logic
+│   ├── incremental_indexer.py # Live indexing and file watcher
+│   ├── llama_cpp_interface.py # Inference using llama-cpp-python
+│   └── utils.py             # Helper utilities
 ```
 
 ## Quick Start
@@ -38,93 +32,59 @@ de_to_en_translator/
 ### Prerequisites
 
 ```bash
-# Install language models for tokenization
-python -m spacy download de_core_news_sm
-python -m spacy download en_core_web_sm
+brew install cmake
+pip install -r requirements.txt
 ```
 
-### Installation
+### Setup
 
-1. Install the model package:
-```bash
-cd model_package
-pip install dist/model_package-0.1.tar.gz
-```
+1. Download a GGUF quantized LLaMA model (e.g., from TheBloke on Hugging Face)  
+   Place the `.gguf` file inside the `models/` directory.
 
-2. Install the inference package:
-```bash
-cd infer_package
-pip install dist/infer_package-0.1.tar.gz
-```
+2. Drop `.txt`, `.pdf`, or `.docx` files into `docs/`.
 
-### Usage
-
-#### Translation API
-
-```python
-import infer_package.translate as translator
-
-# Translate German text to English
-result = translator.get_translation("Ich bin ein Berliner")
-print(result)  # Output: 'I am a Berliner'
-```
-
-#### Running the Demo API
+3. Launch the app:
 
 ```bash
-cd demo_api/demo_api
-python app.py
+streamlit run src/app.py
 ```
 
-The API will be available at `http://localhost:5000`
+## Usage
+
+- Ask a question in the chat interface (e.g., “What does the NDA say about IP ownership?”)
+- DocAssist retrieves relevant chunks and answers using the local model
+- Click “Download Document” to fetch the original source
 
 ## Development
 
-### Training Custom Models
+### Indexing and Embeddings
 
-1. Navigate to the model package:
+Run once or run continuously in background:
+
 ```bash
-cd model_package/model_package
+python src/incremental_indexer.py
 ```
 
-2. Configure model parameters in `constants.py`
+### Eval Framework (WIP)
 
-3. Start training:
-```bash
-python driver.py
-```
+Evaluation support for exact match and similarity scoring using test questions.
 
-Trained models are saved in `model_package/model_package/checkpoints/`
+### Streaming Support (Optional)
 
-### Package Development
-
-#### Creating Model Package
-```bash
-cd model_package
-python setup.py sdist bdist_wheel
-```
-
-#### Creating Inference Package
-```bash
-cd infer_package
-python setup.py sdist bdist_wheel
-```
+Adaptable to use streaming with `llama-cpp-python`'s token-level callback.
 
 ## Technical Details
 
-- **Model Architecture**: Transformer-based neural network
-- **Tokenization**: SpaCy for German and English text processing
-- **API Framework**: Flask for REST API implementation
-- **Training Pipeline**: Custom training loop with configurable parameters
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+- **Embedding Model**: `all-MiniLM-L6-v2` via `sentence-transformers`
+- **VectorDB**: `faiss-cpu` for fast ANN retrieval
+- **LLM Runtime**: `llama-cpp-python` (Metal or CPU backend)
+- **Prompt Format**: RAG-style `[INST]` instructions for LLaMA 2 compatibility
+- **File Watching**: `watchdog` for tracking document changes
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+Got ideas or suggestions? Feel free to open an issue or reach out.
